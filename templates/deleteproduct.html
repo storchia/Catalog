@@ -1,0 +1,12 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+  <div class = "menu">
+   <div class = "head1"><h1> Are you sure you want to delete <font color = "red"><u>{{deletingprod.name}}</u></font> </h1></div><br>
+   <form action = '{{url_for('deleteProduct',category_id=category_id,id = id)}}' method = 'POST'>
+      <h2><input type = "submit" class="button" value = 'Delete'></h2>
+      <a href = '{{url_for('showProducts',category_id=category_id)}}'>Cancel</a>
+   </form>
+  </div>
+</body>
+</html>

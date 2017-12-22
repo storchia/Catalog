@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+  <div class = "newmenuitem">
+  <div class = "head1"><h1> New Product </h1><br></div>
+  <form action = '{{url_for('newProduct',category_id = category_id)}}' method = 'POST'>
+    <div class="nameitem">
+      Name:
+      <br>
+      <input type = "text" size="60" name = 'prodname' onkeypress="return event.keyCode != 13;">
+    </div>
+
+    <div class="descript">
+      <div class="desctitle">
+        Description:
+      </div>
+      <br>
+      <textarea name='proddesc' rows="4" cols="60" onkeypress="return event.keyCode != 13;"></textarea>
+      <br>
+    </div>
+    <br>
+    <input type = "submit" class="button" value='Create '>
+    <br><br>
+    <a href = '{{url_for('showProducts', category_id=category_id)}}'>Cancel
+
+
+
+  </div>
+  </form>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+  <div class = "menu">
+<div class = "head1"><h1> New Category </h1></div>
+<form method = 'POST' action = '{{url_for('newCategory')}}'>
+  <input type= 'text' name = 'categname' size="60" placeholder='Insert New Category here'>
+  <p><input type = "submit" class="button" value='Create '><p>
+  <a href = '{{url_for('showCategories')}}'>Cancel</h2>
+</form>
+</div>
+</body>
+</html>
