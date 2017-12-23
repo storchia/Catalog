@@ -159,6 +159,8 @@ def showCategories():
 # Create New Categories
 @app.route('/categories/new/', methods=['GET', 'POST'])
 def newCategory():
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         new_category = Categories(name=request.form['categname'])
         session.add(new_category)
@@ -173,6 +175,8 @@ def newCategory():
 
 def editCategory(category_id):
     editedcateg = session.query(Categories).filter_by(id=category_id).one()
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         if request.form['editcategname']:
             editedcateg.name = request.form['editcategname']
@@ -188,6 +192,8 @@ def editCategory(category_id):
 @app.route('/categories/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
     deletedcateg = session.query(Categories).filter_by(id=category_id).one()
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         session.delete(deletedcateg)
         session.commit()
@@ -210,6 +216,8 @@ def showProducts(category_id):
            methods=['GET', 'POST'])
 def newProduct(category_id):
     category = session.query(Categories).filter_by(id=category_id).one()
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         newprod = Products(name=request.form['prodname'],
                            description=request.form['proddesc'],
@@ -226,6 +234,8 @@ def newProduct(category_id):
            methods=['GET', 'POST'])
 def editProduct(category_id, id):
     editingprod = session.query(Products).filter_by(id=id).one()
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         if request.form['editprodname']:
             editingprod.name = request.form['editprodname']
@@ -245,6 +255,8 @@ def editProduct(category_id, id):
            methods=['GET', 'POST'])
 def deleteProduct(category_id, id):
     deletingprod = session.query(Products).filter_by(id=id).one()
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         session.delete(deletingprod)
         session.commit()
