@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Categories, Products
+from database_setup import Base, Categories, Products, User
 
 from flask import session as login_session
 import random
@@ -107,6 +107,12 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # see if user exists, if it doesn't make a new one
+    user_id = getUserID(login_session['email'])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -118,7 +124,32 @@ def gconnect():
     print "done!"
     return output
 
- # DISCONNECT - Revoke a current user's token and reset their login_session
+# User Helper Functions
+
+
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session[
+                   'email'], picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
+
+# DISCONNECT - Revoke a current user's token and reset their login_session
+
 
 @app.route('/gdisconnect')
 def gdisconnect():
@@ -162,7 +193,7 @@ def newCategory():
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
-        new_category = Categories(name=request.form['categname'])
+        new_category = Categories(name=request.form['categname'], user_id=login_session['user_id'])
         session.add(new_category)
         session.commit()
         flash("New Category Created!")
@@ -208,8 +239,12 @@ def deleteCategory(category_id):
 @app.route('/categories/<int:category_id>/products/')
 def showProducts(category_id):
     category = session.query(Categories).filter_by(id=category_id).one()
-    prods = session.query(Products).filter_by(category_id=category.id)
-    return render_template("products.html", category=category, prods=prods)
+    creator = getUserInfo(category.user_id)
+    prods = session.query(Products).filter_by(category_id=category.id).all()
+    if 'username' not in login_session or creator.id != login_session['user_id']:
+        return render_template('publicproducts.html', prods=prods, category=category, creator=creator)
+    else:
+        return render_template("products.html", category=category, prods=prods)
 
 # Create New Product
 @app.route('/categories/<int:category_id>/products/new/',
