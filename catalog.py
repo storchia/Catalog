@@ -389,6 +389,29 @@ def deleteProduct(category_id, id):
                                category_id=category_id,
                                id=id, deletingprod=deletingprod)
 
+# Making an API Endpoint(Get Request)
+@app.route("/categories/JSON")
+def categoriesJSON():
+    categs = session.query(Categories).all()
+
+    return jsonify(Categories=[c.serialize for c in categs])
+
+
+@app.route("/categories/<int:category_id>/products/JSON/")
+def productsJSON(category_id):
+    category = session.query(Categories).filter_by(id=category_id).one()
+    prods = session.query(Products).filter_by(category_id=category.id)
+
+    return jsonify(Products=[p.serialize for p in prods])
+
+
+@app.route("/categories/<int:category_id>/products/<int:id>/JSON/")
+def restandprodJSON(category_id, id):
+    prod = session.query(Products).filter_by(id=id).one()
+
+    return jsonify(Products=prod.serialize)
+
+
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
