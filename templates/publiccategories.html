@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+
+<body>
+
+  <div class = "list">
+<div class = "head"><h1><u>Categories</u></h1></div>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+     {% for message in messages %}
+        <li> <strong>{{message}}</strong> </li>
+      {% endfor %}
+  {% endif %}
+{% endwith %}
+{% for category in categories %}
+   <h3><a href = '{{url_for('showProducts',category_id=category.id)}}'>{{category.name}}</h3>
+
+{% endfor %}
+</div>
+</body>
+</html>

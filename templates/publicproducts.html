@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+
+  <div class = "menu">
+  <div class = "head"><h1><u>{{category.name}}</u></h1></div>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+       {% for message in messages %}
+          <li> <strong>{{message}}</strong> </li>
+        {% endfor %}
+    {% endif %}
+  {% endwith %}
+  <hr class="menubreak">
+          {% for i in prods %}
+               <div class = "nameandprice">
+                 <strong><span class = "name">{{i.name}}</span></strong>
+                 <div class = "desc"><strong>{{i.description}}</strong></div>
+               </div>
+              <br>
+          {% endfor %}
+  <b><a href = '{{url_for('showCategories')}}'>Back to Category List</h2></b>
+</div>
+</body>
+  </html>
