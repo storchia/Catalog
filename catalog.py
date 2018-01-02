@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request
+from flask import redirect, url_for, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Categories, Products, User
@@ -27,6 +28,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+
 # Create anti-forgery state token
 @app.route('/login')
 def showLogin():
@@ -35,6 +37,7 @@ def showLogin():
     login_session['state'] = state
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
+
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
@@ -45,7 +48,6 @@ def fbconnect():
     access_token = request.data
     print "access token received %s " % access_token
 
-
     app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
@@ -55,15 +57,15 @@ def fbconnect():
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
-
     # Use token to get user info from API
     userinfo_url = "https://graph.facebook.com/v2.8/me"
     '''
-        Due to the formatting for the result from the server token exchange we have to
-        split the token first on commas and select the first index which gives us the key : value
-        for the server access token then we split it on colons to pull out the actual token value
-        and replace the remaining quotes with nothing so that it can be used directly in the graph
-        api calls
+        Due to the formatting for the result from the server token exchange
+        we have to split the token first on commas and select the first index
+        which gives us the key : value for the server access token
+        then we split it on colons to pull out the actual token value
+        and replace the remaining quotes with nothing so that it can be used
+        directly in the graph api calls
     '''
     token = result.split(',')[0].split(':')[1].replace('"', '')
 
@@ -113,7 +115,7 @@ def fbdisconnect():
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     del login_session['username']
@@ -272,6 +274,7 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
+
 # Disconnect based on provider
 @app.route('/disconnect')
 def disconnect():
@@ -286,11 +289,13 @@ def disconnect():
         flash("You were not logged in")
         return redirect(url_for('showCategories'))
 
+
 @app.route('/')
 @app.route('/categories/')
 def showCategories():
     categories = session.query(Categories).all()
     return render_template('categories.html', categories=categories)
+
 
 # Create New Categories
 @app.route('/categories/new/', methods=['GET', 'POST'])
@@ -305,6 +310,7 @@ def newCategory():
         return redirect(url_for('showCategories'))
     else:
         return render_template("newcategory.html")
+
 
 # Edit Category
 @app.route('/categories/<int:category_id>/edit/', methods=['GET', 'POST'])
@@ -323,6 +329,7 @@ def editCategory(category_id):
         return render_template('editcategory.html',
                                category_id=category_id, categ=editedcateg)
 
+
 # Delete Category
 @app.route('/categories/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
@@ -338,6 +345,7 @@ def deleteCategory(category_id):
         return render_template('deletecategory.html',
                                category_id=category_id, categ=deletedcateg)
 
+
 # All Products for selected Category
 @app.route('/categories/<int:category_id>/')
 @app.route('/categories/<int:category_id>/products/')
@@ -349,6 +357,7 @@ def showProducts(category_id):
         return render_template('publicproducts.html', prods=prods, category=category, creator=creator)
     else:
         return render_template("products.html", category=category, prods=prods)
+
 
 # Create New Product
 @app.route('/categories/<int:category_id>/products/new/',
@@ -367,6 +376,7 @@ def newProduct(category_id):
         return redirect(url_for('showProducts', category_id=category_id))
     else:
         return render_template("newproduct.html", category_id=category_id)
+
 
 # Edit Product
 @app.route('/categories/<int:category_id>/products/<int:id>/edit/',
@@ -389,6 +399,7 @@ def editProduct(category_id, id):
                                category_id=category_id,
                                id=id, editingprod=editingprod)
 
+
 # Delete Product
 @app.route('/categories/<int:category_id>/products/<int:id>/delete/',
            methods=['GET', 'POST'])
@@ -405,6 +416,7 @@ def deleteProduct(category_id, id):
         return render_template("deleteproduct.html",
                                category_id=category_id,
                                id=id, deletingprod=deletingprod)
+
 
 # Making an API Endpoint(Get Request)
 @app.route("/categories/JSON")
