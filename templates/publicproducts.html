@@ -10,9 +10,9 @@
   <div class="title">
     Catalog App
     <div class="button">
-			{%if 'username' not in session %}
+      {%if 'username' not in session %}
 			<a href="{{url_for('showLogin')}}">Login </a>
-			{ % else % }
+			{% else %}
 			<a href="{{url_for('disconnect')}}">Logout </a>
 			{% endif %}
     </div>

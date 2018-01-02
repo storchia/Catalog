@@ -303,7 +303,8 @@ def newCategory():
     if 'username' not in login_session:
         return render_template("route_login.html")
     if request.method == 'POST':
-        new_category = Categories(name=request.form['categname'], user_id=login_session['user_id'])
+        new_category = Categories(name=request.form['categname'],
+                                  user_id=login_session['user_id'])
         session.add(new_category)
         session.commit()
         flash("New Category Created!")
@@ -354,7 +355,8 @@ def showProducts(category_id):
     creator = getUserInfo(category.user_id)
     prods = session.query(Products).filter_by(category_id=category.id).all()
     if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('publicproducts.html', prods=prods, category=category, creator=creator)
+        return render_template('publicproducts.html', prods=prods,
+                               category=category, creator=creator)
     else:
         return render_template("products.html", category=category, prods=prods)
 
