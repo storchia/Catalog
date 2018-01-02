@@ -1,30 +1,31 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
+<title>Catalog App</title>
+	<head>
+		<link href="https://fonts.googleapis.com/css?family=Istok+Web:700" rel="stylesheet">
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+<div class="top_banner">
+  <div class="title">
+    Catalog App
+  </div>
+</div>
 <body>
-  <div class = "newmenuitem">
-  <div class = "head1"><h1> New Product </h1><br></div>
+  <div class = "newprod">
+  <div class = "head1"><h1><u>New Product</u></h1></div>
   <form action = '{{url_for('newProduct',category_id = category_id)}}' method = 'POST'>
-    <div class="nameitem">
-      Name:
-      <br>
-      <input type = "text" size="60" name = 'prodname' onkeypress="return event.keyCode != 13;">
-    </div>
-
-    <div class="descript">
-      <div class="desctitle">
-        Description:
+    <div class="nameanddesc">
+      <div class="name">
+        Name:
+        <input type = "text" size="60" name = 'prodname' onkeypress="return event.keyCode != 13;">
       </div>
-      <br>
+    <div class="desc">
+        Description:
       <textarea name='proddesc' rows="4" cols="60" onkeypress="return event.keyCode != 13;"></textarea>
-      <br>
     </div>
-    <br>
-    <input type = "submit" class="button" value='Create '>
-    <br><br>
+    </div>
+    <input type = "submit" class="createbutton" value='Create Product'>
     <a href = '{{url_for('showProducts', category_id=category_id)}}'>Cancel
-
-
-
   </div>
   </form>
 </body>

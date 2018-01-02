@@ -1,25 +1,29 @@
 <!DOCTYPE HTML>
-<html>
-<body>
-<div class = "menu">
-  <div class = "menuedit"><h1> Edit Product </h1>
-<form method = 'POST' action = '{{url_for('editProduct',category_id=category_id,id=id)}}'>
-      <div class="nameitem">
-        Name:
-        <br>
-        <input type = "text" size="60" name = 'editprodname' placeholder='{{editingprod.name}}' onkeypress="return event.keyCode != 13;"><br>
-      </div>
-      <div class="descript">
-        <div class="desctitle">
-          Description:
-        </div>
-        <br>
-      <textarea type = "text" name = 'editproddesc' placeholder="{{editingprod.description}}" rows="4" cols="60" onkeypress="return event.keyCode != 13;"></textarea>  <br>
-      </div>
+<html lang="en">
+<title>Catalog App</title>
+	<head>
+		<link href="https://fonts.googleapis.com/css?family=Istok+Web:700" rel="stylesheet">
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+<div class="top_banner">
+  <div class="title">
+    Catalog App
   </div>
-  <input type = "submit" class="button" value = 'Edit Menu'>
-  <br><br>
-  <a href = '{{url_for('showProducts',category_id=category_id)}}'>Cancel</h2>
+</div>
+<body>
+<div class = "editprod">
+  <div class = "head1"><h1><u>Edit Product</u></h1></div>
+<form method = 'POST' action = '{{url_for('editProduct',category_id=category_id,id=id)}}'>
+      <div class="nameanddesc">
+        <div class="name">
+          Name: <input type = "text" size="60" name = 'editprodname' placeholder='{{editingprod.name}}' onkeypress="return event.keyCode != 13;">
+        </div>
+        <div class="desc">
+          Description: <textarea type = "text" name = 'editproddesc' placeholder="{{editingprod.description}}" rows="4" cols="60" onkeypress="return event.keyCode != 13;"></textarea>
+        </div>
+      </div>
+  <input type = "submit" class="editbutton" value = 'Edit Product'>
+  <a href = '{{url_for('showProducts',category_id=category_id)}}'>Cancel
 </div>
 </form>
 </body>

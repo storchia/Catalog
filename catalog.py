@@ -14,6 +14,7 @@ import json
 from flask import make_response
 import requests
 
+
 app = Flask(__name__)
 
 CLIENT_ID = json.loads(
@@ -194,6 +195,8 @@ def gconnect():
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
+    # ADD PROVIDER TO LOGIN SESSION
+    login_session['provider'] = 'google'
 
     # see if user exists, if it doesn't make a new one
     user_id = getUserID(login_session['email'])
@@ -268,6 +271,20 @@ def gdisconnect():
         response = make_response(json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
+
+# Disconnect based on provider
+@app.route('/disconnect')
+def disconnect():
+    if 'provider' in login_session:
+        if login_session['provider'] == 'google':
+            gdisconnect()
+        if login_session['provider'] == 'facebook':
+            fbdisconnect()
+        flash("You have successfully been logged out.")
+        return redirect(url_for('showCategories'))
+    else:
+        flash("You were not logged in")
+        return redirect(url_for('showCategories'))
 
 @app.route('/')
 @app.route('/categories/')
