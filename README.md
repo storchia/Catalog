@@ -13,4 +13,9 @@ I have developed an application that creates a Catalog based on Categories and P
 vagrant@vagrant:/$ *cd /vagrant/catalog*
 vagrant@vagrant:/$ *python catalog.py*
 
-Access and test Catalog App by visiting http://localhost:8000 locally
+Access and test Catalog App by visiting http://localhost:8000 locally       
+
+
+---  
+
+##### Base Code from Udacity Restaurant Menu App
