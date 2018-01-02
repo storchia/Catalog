@@ -136,7 +136,7 @@ input {
 }
 
 .link {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .editcat {
@@ -250,4 +250,8 @@ hr {
   margin-right: 14%;
   border-radius: 6px;
   margin-bottom: 30px;
+}
+
+.desc {
+  font-size: 20px;
 }
